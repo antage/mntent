@@ -2,6 +2,10 @@
 
 `mntent` is mtab/fstab parser for Go.
 
+## Requirements
+
+`mntent` requires Go 1.1 or above.
+
 ## Installation
 
 ```
