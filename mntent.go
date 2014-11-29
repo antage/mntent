@@ -52,6 +52,14 @@ func Parse(filename string) ([]*Entry, error) {
 	return entries, nil
 }
 
+func unescape(s string) string {
+	s = strings.Replace(s, "\\011", "\t", -1)
+	s = strings.Replace(s, "\\012", "\n", -1)
+	s = strings.Replace(s, "\\040", " ", -1)
+	s = strings.Replace(s, "\\134", "\\", -1)
+	return s
+}
+
 var splitRegExp = regexp.MustCompile("\\s+")
 
 func parseLine(untrimmedLine string) (*Entry, error) {
@@ -69,10 +77,10 @@ func parseLine(untrimmedLine string) (*Entry, error) {
 	}
 
 	entry := &Entry{}
-	entry.Name = fields[0]
-	entry.Directory = fields[1]
-	entry.Types = strings.Split(fields[2], ",")
-	entry.Options = strings.Split(fields[3], ",")
+	entry.Name = unescape(fields[0])
+	entry.Directory = unescape(fields[1])
+	entry.Types = strings.Split(unescape(fields[2]), ",")
+	entry.Options = strings.Split(unescape(fields[3]), ",")
 
 	num, err := strconv.ParseUint(fields[4], 10, 31)
 	if err != nil {
